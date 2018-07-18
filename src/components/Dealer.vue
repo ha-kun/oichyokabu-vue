@@ -20,17 +20,20 @@
     },
     created: function () {
       this.hand.push(pick());
-      this.hand.push(pick());
-      this.hand[0].hide = true;
       this.$on('postexec', this.postexec)
     },
     methods: {
       postexec (playerBust) {
         this.hand[0].hide = false;
-        while (!playerBust && calc(this.hand) < 17) {
+        this.hand[1].hide = false;
+        while (!playerBust && calc(this.hand) < 5) {
           this.hand.push(pick())
         }
         this.$emit('result', calc(this.hand))
+      },
+      hit () {
+        this.hand.push(pick());
+        this.hand[1].hide = true;
       }
     }
   }

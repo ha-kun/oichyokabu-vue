@@ -2,12 +2,12 @@ export default hand => {
   const points= hand.map(card => (card.number > 10 ? 10 : card.number))
   const sum = points.reduce((ret, cur) => ret + cur)
 
-  if (sum > 21) {
-    return 'Bust'
+  if (20 > sum && sum > 9) {
+    return sum - 10
   }
 
-  if (sum < 11 && points.some(a => a === 1)) {
-    return sum + 10
+  if (sum >= 20) {
+    return sum -20
   }
 
   return sum

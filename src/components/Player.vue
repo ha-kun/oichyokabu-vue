@@ -3,7 +3,10 @@
     <div class="flex">
       <card v-for="(card, index) in hand" :key="index" :suit="card.suit" :number="card.number" :hide="card.hide"></card>
     </div>
-    <div class="flex" v-show="showButtons">
+    <div class="flex" v-if="showButtons === 'choice'">
+      <button @click="choice">Choice</button>
+    </div>
+    <div class="flex" v-else-if="showButtons === 'choiced'">
       <button @click="hit">Hit</button>
       <button @click="stand">Stand</button>
     </div>
@@ -22,10 +25,10 @@
       return {
         hand: [],
         result: 0,
+        choiced: false,
       }
     },
     created: function () {
-      this.hand.push(pick());
       this.hand.push(pick());
       this.result = calc(this.hand);
     },
@@ -36,6 +39,10 @@
       },
       stand () {
         this.$emit('stand', this.result)
+      },
+      choice () {
+        this.choiced = true;
+        this.$emit('deal', this.result)
       }
     },
     watch: {

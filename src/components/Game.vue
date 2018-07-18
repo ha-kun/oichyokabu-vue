@@ -4,10 +4,14 @@
     <div class="message">
       {{ mainMessage }}
     </div>
-    <player @stand="stand" :showButtons="showButtons" />
     <div class="message result">
       {{ resultMessage }}
     </div>
+    <player ref="player1" @stand="stand" @deal="deal" :showButtons="showButtons" />
+    <player ref="player2" @stand="stand" @deal="deal" :showButtons="showButtons" />
+    <player ref="player3" @stand="stand" @deal="deal" :showButtons="showButtons" />
+    <player ref="player4" @stand="stand" @deal="deal" :showButtons="showButtons" />
+
   </div>
 </template>
 
@@ -19,10 +23,10 @@
     components: { Dealer, Player },
     data () {
       return {
-        mainMessage: 'Welcome to Black Jack',
+        mainMessage: 'Welcome to Oichyo Kabu',
         playersResult: 0,
         dealersResult: 0,
-        showButtons: true,
+        showButtons: "choice",
       }
     },
     methods: {
@@ -35,6 +39,29 @@
         this.showButtons = false
         this.mainMessage = `Dealer : ${dealersResult} / Player : ${this.playersResult}`
       },
+      deal: function () {
+        // 各playerにカードを配る
+        this.$refs.dealer.hit();
+        this.$refs.player1.hit();
+        this.$refs.player2.hit();
+        this.$refs.player3.hit();
+        this.$refs.player4.hit();
+
+        // 選択したカード以外のボタンを隠す
+        var obj = this.$refs;
+        Object.keys(obj).forEach(function (key) {
+          if (key == 'dealer') {
+            return;
+          }
+
+          if (obj[key].$data.choiced) {
+            obj[key].showButtons = "choiced";
+            return;
+          }
+
+          obj[key].showButtons = false;
+        });
+      }
     },
     computed: {
       resultMessage: function () {
